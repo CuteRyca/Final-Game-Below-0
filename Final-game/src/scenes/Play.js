@@ -37,28 +37,34 @@ class Play extends Phaser.Scene {
         this.hook.update();
 
         if(this.checkCollision(this.mother, this.fish)){
-            this.fish.reset()
+            this.eatFish(this.fish);
         }
 
-        if(this.checkCollision(this.mother, this.shark)){
-        }
+        /*if(this.checkCollision(this.mother, this.shark)){
+        }*/
 
-        if(this.checkCollision(this.mother, this.shark)){
+        if(this.checkCollision(this.mother, this.hook)){
+            this.touchHook(this.hook);
         }
     }
 
-checkCollision(mother, fish) {
-    if (mother.x < fish.x + fish.width && 
-        mother.x + mother.width > fish.x && 
-        mother.y < fish.y + fish.height &&
-        mother.height + mother.y > fish.y) {
-            return true;
-    } else {
-        return false;
+    checkCollision(mother, fish) {
+        if (mother.x < fish.x + fish.width && 
+            mother.x + mother.width > fish.x && 
+            mother.y < fish.y + fish.height &&
+            mother.height + mother.y > fish.y) {
+                return true;
+            }else {
+            return false;
+        }
     }
-}
 
-checkCollision(mother, shark) {
+    eatFish(fish){
+        fish.alpha = 0;
+        fish.reset();
+        fish.alpha = 1;
+    }
+/*checkCollision(mother, shark) {
     if (mother.x < shark.x + shark.width && 
         mother.x + mother.width > shark.x && 
         mother.y < shark.y + shark.height &&
@@ -68,16 +74,21 @@ checkCollision(mother, shark) {
         return false;
     }
 }
-
-checkCollision(mother, hook) {
-    if (mother.x < hook.x + hook.width && 
-        mother.x + mother.width > hook.x && 
-        mother.y < hook.y + hook.height &&
-        mother.height + mother.y > hook.y) {
-            return true;
-    } else {
-        return false;
+sharkEat(){
+    
+}*/
+    checkCollision(mother, hook) {
+        if (mother.x < hook.x + hook.width && 
+            mother.x + mother.width > hook.x && 
+            mother.y < hook.y + hook.height &&
+            mother.height + mother.y > hook.y) {
+                return true;
+        } else {
+            return false;
+        }
     }
-}
-
+    touchHook(hook){
+        hook.reset();
+        this.scene.start('skyScene');
+    }
 }

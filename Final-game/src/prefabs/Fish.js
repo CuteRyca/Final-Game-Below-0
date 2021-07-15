@@ -1,5 +1,5 @@
 class Fish extends Phaser.GameObjects.Sprite{
-    constructor(scene, x, y, texture, frame, blueberrypoints){
+    constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
         scene.add.existing(this);
         this.moveSpeed = 6;
@@ -14,6 +14,6 @@ class Fish extends Phaser.GameObjects.Sprite{
 
     reset(){
         this.x = 0;
-        this.y = Phaser.Math.Between(game.config.height * 0.7, 0);
+        this.y = Phaser.Math.Between(game.config.height * 0.8, 0);
     }
 }
