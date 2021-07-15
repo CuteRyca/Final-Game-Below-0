@@ -14,6 +14,6 @@ class Fish extends Phaser.GameObjects.Sprite{
 
     reset(){
         this.x = 0;
-        this.y = Phaser.Math.Between(game.config.height * 0.8, game.config.height * 0.3);
+        this.y = Phaser.Math.Between(game.config.height * 0.7, game.config.height * 0.3);
     }
 }

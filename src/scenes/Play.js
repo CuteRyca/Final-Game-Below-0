@@ -9,6 +9,8 @@ class Play extends Phaser.Scene {
         this.load.image('fish','./assets/fish1.png');
         this.load.image('shark','./assets/shark.png');
         this.load.image('hook','./assets/hook1.png');
+        this.load.image('baby','./assets/baby.png');
+        this.load.image('nest', './assets/nest.png');
     }
     create(){
 
@@ -22,6 +24,8 @@ class Play extends Phaser.Scene {
         //game.physics.enable(Shark, Phaser.Physics.ARCADE);
         this.hook = new Hook(this,  game.config.width / 2, 0,'hook', 0, 30).setScale(1.5);
     	//game.physics.enable(hook, Phaser.Physics.ARCADE);
+        this.baby = new Baby(this, game.config.width / 2, game.config.height*0.95,'baby', 0, 30).setOrigin(0,0);
+        this.nest = new Nest(this, game.config.width / 2, game.config.height*0.95,'nest', 0, 30).setOrigin(0,0).setScale(0.7);
         //define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -29,8 +33,11 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         
         //add score
+        this.numberOfFish = 0;
         this.score = 0;
-        this.scoreBoard = this.add.text(16, 16, 'Fish:  ' + this.score, style);
+        this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
+        this.fishnum = 0;
+        this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
     }
     update(){
         this.sea.tilePositionX +=2;
@@ -38,7 +45,8 @@ class Play extends Phaser.Scene {
         this.fish.update();
         this.shark.update();
         this.hook.update();
-
+        this.baby.update();
+        this.nest.update();
         if(this.checkCollision(this.mother, this.fish)){
             this.eatFish(this.fish);
         }
@@ -49,6 +57,14 @@ class Play extends Phaser.Scene {
         if(this.checkCollision(this.mother, this.hook)){
             this.touchHook(this.hook);
         }
+        
+        if(this.checkCollision(this.mother, this.nest)){
+            this.arriveNest();
+        }
+        //game.config.height*0.7 is the height of cave
+        /*if(this.mother.y<game.config.height*0.7&&this.score<this.fishnum){
+            this.eatFood();
+        }*/
     }
 
     checkCollision(mother, fish) {
@@ -68,8 +84,8 @@ class Play extends Phaser.Scene {
         fish.alpha = 1;
         this.scoreBoard.destroy();
         this.score+=1;
-        this.scoreBoard = this.add.text(16, 16, 'Fish:  ' + this.score, style);
-        x = this.score;
+        this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
+        this.numberOfFish = this.score;
     }
 /*checkCollision(mother, shark) {
     if (mother.x < shark.x + shark.width && 
@@ -98,4 +114,29 @@ sharkEat(){
         hook.reset();
         this.scene.start('skyScene');
     }
+    checkCollision(mother, nest) {
+        if (mother.x < nest.x + nest.width && 
+            mother.x + mother.width > nest.x && 
+            mother.y < nest.y + nest.height &&
+            mother.height + mother.y > nest.y) {
+                return true;
+            }else {
+            return false;
+        }
+    }
+    arriveNest(){ 
+        this.scoreBoard.destroy();
+        this.score = 0;
+        this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
+        this.fishBoard.destroy();
+        this.fishnum = this.numberOfFish;
+        this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
+    }
+    /*
+    eatFood(){
+        this.fishBoard.destroy();
+        this.fishnum-=1;
+        this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
+    }*/
+    
 }

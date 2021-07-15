@@ -14,6 +14,6 @@ class Bird extends Phaser.GameObjects.Sprite{
 
     reset(){
         this.x = 0;
-        this.y = Phaser.Math.Between(game.config.height * 0.6, 0);
+        this.y = Phaser.Math.Between(game.config.height * 0.7, 0);
     }
 }

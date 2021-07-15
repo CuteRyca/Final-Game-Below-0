@@ -11,6 +11,6 @@ let config = {
 let game = new Phaser.Game(config);
 let keyLEFT, keyRIGHT, keyUP, keyDOWN;
 let style = { font: "bold 32px Arial", fill: "#fff" };
-let x = 0;
+
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
