@@ -11,12 +11,17 @@ class Play extends Phaser.Scene {
         this.load.image('hook','./assets/hook1.png');
     }
     create(){
+
         //add background,mother,fish
         this.sea = this.add.tileSprite(0, 0, 840, 640, 'sea').setOrigin(0, 0);
         this.mother = new Mother(this, game.config.width / 2, game.config.height*0.95, 'mother').setOrigin(0.5, 0);
+    	//game.physics.enable(mother, Phaser.Physics.ARCADE);
         this.fish = new Fish(this, game.config.width + 60, 50,'fish', 0, 30).setOrigin(0,0);
+        //game.physics.enable(this.fish, Phaser.Physics.ARCADE);
         this.shark = new Shark(this, 0, 50,'shark', 0, 30).setOrigin(0,0);
+        //game.physics.enable(Shark, Phaser.Physics.ARCADE);
         this.hook = new Hook(this,  game.config.width / 2, 0,'hook', 0, 30).setScale(1.5);
+    	//game.physics.enable(hook, Phaser.Physics.ARCADE);
         //define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -30,5 +35,49 @@ class Play extends Phaser.Scene {
         this.fish.update();
         this.shark.update();
         this.hook.update();
+
+        if(this.checkCollision(this.mother, this.fish)){
+            this.fish.reset()
+        }
+
+        if(this.checkCollision(this.mother, this.shark)){
+        }
+
+        if(this.checkCollision(this.mother, this.shark)){
+        }
     }
+
+checkCollision(mother, fish) {
+    if (mother.x < fish.x + fish.width && 
+        mother.x + mother.width > fish.x && 
+        mother.y < fish.y + fish.height &&
+        mother.height + mother.y > fish.y) {
+            return true;
+    } else {
+        return false;
+    }
+}
+
+checkCollision(mother, shark) {
+    if (mother.x < shark.x + shark.width && 
+        mother.x + mother.width > shark.x && 
+        mother.y < shark.y + shark.height &&
+        mother.height + mother.y > shark.y) {
+            return true;
+    } else {
+        return false;
+    }
+}
+
+checkCollision(mother, hook) {
+    if (mother.x < hook.x + hook.width && 
+        mother.x + mother.width > hook.x && 
+        mother.y < hook.y + hook.height &&
+        mother.height + mother.y > hook.y) {
+            return true;
+    } else {
+        return false;
+    }
+}
+
 }
