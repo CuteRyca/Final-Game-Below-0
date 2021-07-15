@@ -1,12 +1,12 @@
 let config = {
-    type: Phaser.CANVAS,
-    width: 840,
-    height: 640,
-    physics: {
-      default: "arcade"
-  },
-    scene: [Play]
-  }
+  type: Phaser.CANVAS,
+  width: 840,
+  height: 640,
+  physics: {
+    default: "arcade"
+},
+  scene: [Play]
+}
   
 let game = new Phaser.Game(config);
 let keyLEFT, keyRIGHT, keyUP, keyDOWN;
