@@ -28,6 +28,9 @@ class Play extends Phaser.Scene {
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         
+        //add score
+        this.score = 0;
+        this.scoreBoard = this.add.text(16, 16, 'Fish:  ' + this.score, style);
     }
     update(){
         this.sea.tilePositionX +=2;
@@ -63,6 +66,10 @@ class Play extends Phaser.Scene {
         fish.alpha = 0;
         fish.reset();
         fish.alpha = 1;
+        this.scoreBoard.destroy();
+        this.score+=1;
+        this.scoreBoard = this.add.text(16, 16, 'Fish:  ' + this.score, style);
+        x = this.score;
     }
 /*checkCollision(mother, shark) {
     if (mother.x < shark.x + shark.width && 
