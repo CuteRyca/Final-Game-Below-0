@@ -11,9 +11,10 @@ class Play extends Phaser.Scene {
         this.load.image('hook','./assets/hook1.png');
         this.load.image('baby','./assets/baby.png');
         this.load.image('nest', './assets/nest.png');
+        this.load.image('gameover', './assets/gameover.png');
     }
     create(){
-
+        this.gameOver = false;
         //add background,mother,fish
         this.sea = this.add.tileSprite(0, 0, 840, 640, 'sea').setOrigin(0, 0);
         this.mother = new Mother(this, game.config.width / 2, game.config.height*0.95, 'mother').setOrigin(0.5, 0);
@@ -41,18 +42,27 @@ class Play extends Phaser.Scene {
     }
     update(){
         this.sea.tilePositionX +=2;
+
+        if(!this.gameOver){
         this.mother.update();
         this.fish.update();
         this.shark.update();
         this.hook.update();
         this.baby.update();
         this.nest.update();
+        }
+
+        if(this.gameOver){
+            this.scene.start("gameOverScene");
+        }
+
         if(this.checkCollision(this.mother, this.fish)){
             this.eatFish(this.fish);
         }
 
-        /*if(this.checkCollision(this.mother, this.shark)){
-        }*/
+        if(this.checkCollision(this.mother, this.shark)){
+            this.sharkEat();
+        }
 
         if(this.checkCollision(this.mother, this.hook)){
             this.touchHook(this.hook);
@@ -87,19 +97,19 @@ class Play extends Phaser.Scene {
         this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
         this.numberOfFish = this.score;
     }
-/*checkCollision(mother, shark) {
-    if (mother.x < shark.x + shark.width && 
-        mother.x + mother.width > shark.x && 
-        mother.y < shark.y + shark.height &&
-        mother.height + mother.y > shark.y) {
-            return true;
-    } else {
-        return false;
+    checkCollision(mother, shark) {
+        if (mother.x < shark.x + shark.width && 
+            mother.x + mother.width > shark.x && 
+            mother.y < shark.y + shark.height &&
+            mother.height + mother.y > shark.y) {
+                return true;
+        } else {
+            return false;
+        }
     }
-}
-sharkEat(){
-    
-}*/
+    sharkEat(){
+        this.gameOver = true;
+    }   
     checkCollision(mother, hook) {
         if (mother.x < hook.x + hook.width && 
             mother.x + mother.width > hook.x && 
