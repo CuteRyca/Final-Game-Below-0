@@ -11,6 +11,7 @@ class Sky extends Phaser.Scene {
     }
     create(){
         this.sky = this.add.tileSprite(0, 0, 840, 640, 'sea').setOrigin(0, 0);
+        this.sky = this.add.text(250, 290, 'Working in progress', style).setOrigin(0,0);
         this.bird = new Bird(this, game.config.width + 60, 50,'bird', 0, 30).setOrigin(0,0);
         this.mother = new Mother(this, game.config.width / 2, game.config.height*0.95, 'mother').setOrigin(0.5, 0);
         this.back = new Back(this, game.config.width / 2, game.config.height*0.95,'back', 0, 30).setOrigin(0,0);

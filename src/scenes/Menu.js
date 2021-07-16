@@ -4,6 +4,9 @@ class Menu extends Phaser.Scene {
     }
     preload(){
         this.load.image('menu', './assets/menu.png');
+        this.load.audio('music', './assets/bgm.mp3');
+        this.load.audio('die', './assets/baby_start.wav');
+        this.load.audio('eat', './assets/mother_bite.mp3');
     }
     create(){
         this.menu = this.add.tileSprite(0, 0, 840, 640, 'menu').setOrigin(0,0);

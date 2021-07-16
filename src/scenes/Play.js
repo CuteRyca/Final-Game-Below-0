@@ -39,6 +39,16 @@ class Play extends Phaser.Scene {
         this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
         this.fishnum = 0;
         this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
+    
+        //set bgm
+        //setting up bgm
+        this.bgm = this.sound.add('music', { 
+            mute: false,
+            volume: 0.25,
+            rate: 1,
+            loop: true 
+        });
+        this.bgm.play();
     }
     update(){
         this.sea.tilePositionX +=2;
@@ -90,6 +100,7 @@ class Play extends Phaser.Scene {
 
     eatFish(fish){
         fish.alpha = 0;
+        this.sound.play('eat');
         fish.reset();
         fish.alpha = 1;
         this.scoreBoard.destroy();
@@ -108,6 +119,8 @@ class Play extends Phaser.Scene {
         }
     }
     sharkEat(){
+        this.sound.play('die');
+        this.bgm.stop();
         this.gameOver = true;
     }   
     checkCollision(mother, hook) {
@@ -122,6 +135,7 @@ class Play extends Phaser.Scene {
     }
     touchHook(hook){
         hook.reset();
+        this.bgm.stop();
         this.scene.start('skyScene');
     }
     checkCollision(mother, nest) {
