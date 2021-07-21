@@ -11,6 +11,7 @@ class Play extends Phaser.Scene {
         this.load.image('hook','./assets/hook1.png');
         this.load.image('baby','./assets/baby.png');
         this.load.image('nest', './assets/nest.png');
+        this.load.image('zero','./assets/zero.png');
         this.load.image('gameover', './assets/gameover.png');
         this.load.spritesheet('bubble', './assets/bubbles_sheet.png', {frameWidth: 64,
             frameHeight: 64, startFrame: 0, endFrame: 10});
@@ -19,6 +20,7 @@ class Play extends Phaser.Scene {
         
         this.gameOver = false;
         //add background,mother,fish
+        
         this.sea = this.add.tileSprite(0, 0, 840, 640, 'sea').setOrigin(0, 0);
         this.mother = new Mother(this, game.config.width / 2, game.config.height*0.95, 'mother').setOrigin(0.5, 0);
     	//game.physics.enable(mother, Phaser.Physics.ARCADE);
@@ -53,7 +55,8 @@ class Play extends Phaser.Scene {
             loop: true 
         });
         this.bgm.play();
-
+        
+        //eating animation
         this.anims.create({
             key: 'eatingfish', 
             frames: this.anims.generateFrameNumbers('bubble',{start: 0, end: 10, 
@@ -62,6 +65,8 @@ class Play extends Phaser.Scene {
 
         //baby eats fish timer
         this.babyEat = this.time.addEvent({ delay: 5000, callback: this.updateCounter, callbackScope: this, loop: true});
+        this.winter = this.time.addEvent({ delay: 25000, callback: this.winterTimer, callbackScope: this, loop: true});
+        this.check = this.time.addEvent({ delay: 30000, callback: this.winterCheck, callbackScope: this, loop: true});
     }
     update(){
         this.sea.tilePositionX +=0;
@@ -175,9 +180,24 @@ class Play extends Phaser.Scene {
         this.fishnum += this.numberOfFish;
         this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
     }
-
+    winterTimer(){
+        this.winter = this.add.sprite(game.config.width/2,game.config.height/2,'zero');
+    }
     winterCheck() {
-
+       
+        if(this.fishnum < 5){
+            this.bgm.stop();
+            this.gameOver = true;
+        }else{
+            this.winter.alpha = 0;
+            this.scoreBoard.destroy();
+            this.score = 0;
+            this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
+            this.fishBoard.destroy();
+            this.fishnum =0;
+            this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
+        }
+        console.log('y');
     }
 
     updateCounter() {
