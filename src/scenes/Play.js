@@ -49,6 +49,22 @@ class Play extends Phaser.Scene {
             loop: true 
         });
         this.bgm.play();
+        var timer = this.time.addEvent({
+            delay: 500,                // ms
+            // timer length
+            callback: this.updateCounter,
+            //args: [],
+            callbackScope: Play,
+            loop: true
+        });
+        var winter = this.time.addEvent({
+            delay: 30000,                // ms
+            // timer length
+            callback: this.winterCheck,
+            //args: [],
+            callbackScope: Play,
+            loop: true
+        });
     }
     update(){
         this.sea.tilePositionX +=0;
@@ -156,11 +172,23 @@ class Play extends Phaser.Scene {
         this.fishnum = this.numberOfFish;
         this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
     }
-    /*
+
+    winterCheck() {
+
+    }
+
+    updateCounter() {
+        if (Phaser.Math.RND.between(0, 10) < 1) {
+            // fish eat chance
+            this.eatFood;
+            console.log('x');
+        }
+    }
+    
     eatFood(){
         this.fishBoard.destroy();
         this.fishnum-=1;
         this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
-    }*/
+    }
     
 }
