@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         this.load.image('sea','./assets/new_bg.png');
         this.load.image('mother', './assets/mother.png');
         this.load.image('fish1','./assets/fish1.png');
+        this.load.image('fish3','./assets/fish3.png');
         this.load.image('shark','./assets/shark.png');
         this.load.image('hook','./assets/hook1.png');
         this.load.image('baby','./assets/baby.png');
@@ -25,6 +26,7 @@ class Play extends Phaser.Scene {
         this.mother = new Mother(this, game.config.width / 2, game.config.height*0.95, 'mother').setOrigin(0.5, 0);
     	//game.physics.enable(mother, Phaser.Physics.ARCADE);
         this.fish1 = new Fish1(this, game.config.width + 60, 50,'fish1', 0, 30).setOrigin(0,0);
+        this.fish3 = new Fish3(this, game.config.width + 60, 50,'fish3', 0, 30).setOrigin(0,0);
         //game.physics.enable(this.fish, Phaser.Physics.ARCADE);
         this.shark = new Shark(this, 0, 50,'shark', 0, 30).setOrigin(0,0).setScale(0.8);
         //game.physics.enable(Shark, Phaser.Physics.ARCADE);
@@ -74,6 +76,7 @@ class Play extends Phaser.Scene {
         if(!this.gameOver){
         this.mother.update();
         this.fish1.update();
+        this.fish3.update();
         this.shark.update();
         this.hook.update();
         this.baby.update();
@@ -88,7 +91,9 @@ class Play extends Phaser.Scene {
         if(this.checkCollision(this.mother, this.fish1)){
             this.eatFish1(this.fish1);
         }
-
+        if(this.checkCollision(this.mother, this.fish3)){
+            this.eatFish3(this.fish3);
+        }
         if(this.checkCollision(this.mother, this.shark)){
             this.sharkEat();
         }
@@ -116,7 +121,6 @@ class Play extends Phaser.Scene {
             return false;
         }
     }
-
     eatFish1(fish1){
         let boom = this.add.sprite(this.mother.x, this.mother.y, 'bubble').setOrigin(0,0);
         boom.anims.play('eatingfish');
@@ -127,6 +131,31 @@ class Play extends Phaser.Scene {
         this.sound.play('eat');
         fish1.reset();
         fish1.alpha = 1;
+        this.scoreBoard.destroy();
+        this.score+=1;
+        this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
+        this.numberOfFish = this.score;
+    }
+    checkCollision(mother, fish3) {
+        if (mother.x < fish3.x + fish3.width && 
+            mother.x + mother.width > fish3.x && 
+            mother.y < fish3.y + fish3.height &&
+            mother.height + mother.y > fish3.y) {
+                return true;
+            }else {
+            return false;
+        }
+    }
+    eatFish3(fish3){
+        let boom = this.add.sprite(this.mother.x, this.mother.y, 'bubble').setOrigin(0,0);
+        boom.anims.play('eatingfish');
+        boom.on('animationcomplete', () => {
+            boom.destroy();
+        });
+        fish3.alpha = 0;
+        this.sound.play('eat');
+        fish3.reset();
+        fish3.alpha = 1;
         this.scoreBoard.destroy();
         this.score+=1;
         this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);

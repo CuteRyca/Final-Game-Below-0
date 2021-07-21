@@ -10,7 +10,7 @@ class Mother extends Phaser.GameObjects.Sprite{
                 this.x -= this.moveSpeed;
         } else if(keyRIGHT.isDown && this.x <= game.config.width - (borderUISize + this.width)){
                 this.x += this.moveSpeed;
-        } else if(keyUP.isDown && this.y >= borderUISize * 3 + borderPadding){
+        } else if(keyUP.isDown && this.y >= borderUISize * 3){
                 this.y -= this.moveSpeed;
         } else if(keyDOWN.isDown && this.y <= game.config.height - this.height){
                 this.y +=this.moveSpeed;

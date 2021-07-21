@@ -7,7 +7,7 @@ class Hook extends Phaser.GameObjects.Sprite{
     update(){
         //move from above to bottom
         this.y += this.moveSpeed;
-        if(this.y >= game.config.height/8){
+        if(this.y >= game.config.height*0.1){
             this.reset();
         }
     }
