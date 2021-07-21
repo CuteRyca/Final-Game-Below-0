@@ -1,8 +1,8 @@
-class Fish1 extends Phaser.GameObjects.Sprite{
+class Bulb extends Phaser.GameObjects.Sprite{
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
         scene.add.existing(this);
-        this.moveSpeed = 4;
+        this.moveSpeed = 1;
     }
     update(){
         //move from left to right
@@ -14,6 +14,6 @@ class Fish1 extends Phaser.GameObjects.Sprite{
 
     reset(){
         this.x = 0;
-        this.y = Phaser.Math.Between(game.config.height * 0.85, game.config.height * 0.2);
+        this.y = Phaser.Math.Between(game.config.height * 0.7, game.config.height * 0.2);
     }
 }

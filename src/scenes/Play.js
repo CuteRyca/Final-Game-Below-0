@@ -7,7 +7,10 @@ class Play extends Phaser.Scene {
         this.load.image('sea','./assets/new_bg.png');
         this.load.image('mother', './assets/mother.png');
         this.load.image('fish1','./assets/fish1.png');
+        this.load.image('fish2','./assets/fish2.png');
         this.load.image('fish3','./assets/fish3.png');
+        this.load.image('trash','./assets/trash_can.png');
+        this.load.image('bulb','./assets/light_bulb.png');
         this.load.image('shark','./assets/shark.png');
         this.load.image('hook','./assets/hook1.png');
         this.load.image('baby','./assets/baby.png');
@@ -23,10 +26,13 @@ class Play extends Phaser.Scene {
         //add background,mother,fish
         
         this.sea = this.add.tileSprite(0, 0, 840, 640, 'sea').setOrigin(0, 0);
-        this.mother = new Mother(this, game.config.width / 2, game.config.height*0.95, 'mother').setOrigin(0.5, 0);
+        this.mother = new Mother(this, game.config.width / 2, game.config.height*0.95, 'mother').setOrigin(0.5, 0).setScale(1.3);
     	//game.physics.enable(mother, Phaser.Physics.ARCADE);
-        this.fish1 = new Fish1(this, game.config.width + 60, 50,'fish1', 0, 30).setOrigin(0,0);
-        this.fish3 = new Fish3(this, game.config.width + 60, 50,'fish3', 0, 30).setOrigin(0,0);
+        this.fish1 = new Fish1(this, game.config.width + 60, 50,'fish1', 0, 30).setOrigin(0,0).setScale(1.2);
+        this.fish2 = new Fish2(this, game.config.width + 60, 50,'fish2', 0, 30).setOrigin(0,0).setScale(0.9);
+        this.fish3 = new Fish3(this, game.config.width + 60, 50,'fish3', 0, 30).setOrigin(0,0).setScale(1.4);
+        this.trash = new Trash(this, game.config.width + 60, 50,'trash', 0, 30).setOrigin(0,0).setScale(1.2);
+        this.bulb = new Bulb(this, game.config.width + 60, 50,'bulb', 0, 30).setOrigin(0,0).setScale(1.2);
         //game.physics.enable(this.fish, Phaser.Physics.ARCADE);
         this.shark = new Shark(this, 0, 50,'shark', 0, 30).setOrigin(0,0).setScale(0.8);
         //game.physics.enable(Shark, Phaser.Physics.ARCADE);
@@ -76,12 +82,14 @@ class Play extends Phaser.Scene {
         if(!this.gameOver){
         this.mother.update();
         this.fish1.update();
+        this.fish2.update();
         this.fish3.update();
         this.shark.update();
         this.hook.update();
         this.baby.update();
         this.nest.update();
-        
+        this.trash.update();
+        this.bulb.update();
         }
 
         if(this.gameOver){
@@ -91,13 +99,21 @@ class Play extends Phaser.Scene {
         if(this.checkCollision(this.mother, this.fish1)){
             this.eatFish1(this.fish1);
         }
+        if(this.checkCollision(this.mother, this.fish2)){
+            this.eatFish2(this.fish2);
+        }
         if(this.checkCollision(this.mother, this.fish3)){
             this.eatFish3(this.fish3);
         }
         if(this.checkCollision(this.mother, this.shark)){
             this.sharkEat();
         }
-
+        if(this.checkCollision(this.mother, this.trash)){
+            this.trashEat();
+        }
+        if(this.checkCollision(this.mother, this.bulb)){
+            this.trashEat();
+        }
         if(this.checkCollision(this.mother, this.hook)){
             this.touchHook(this.hook);
         }
@@ -133,6 +149,31 @@ class Play extends Phaser.Scene {
         fish1.alpha = 1;
         this.scoreBoard.destroy();
         this.score+=1;
+        this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
+        this.numberOfFish = this.score;
+    }
+    checkCollision(mother, fish2) {
+        if (mother.x < fish2.x + fish2.width && 
+            mother.x + mother.width > fish2.x && 
+            mother.y < fish2.y + fish2.height &&
+            mother.height + mother.y > fish2.y) {
+                return true;
+            }else {
+            return false;
+        }
+    }
+    eatFish2(fish2){
+        let boom = this.add.sprite(this.mother.x, this.mother.y, 'bubble').setOrigin(0,0);
+        boom.anims.play('eatingfish');
+        boom.on('animationcomplete', () => {
+            boom.destroy();
+        });
+        fish2.alpha = 0;
+        this.sound.play('eat');
+        fish2.reset();
+        fish2.alpha = 1;
+        this.scoreBoard.destroy();
+        this.score-=1;
         this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
         this.numberOfFish = this.score;
     }
@@ -175,7 +216,32 @@ class Play extends Phaser.Scene {
         this.sound.play('die');
         this.bgm.stop();
         this.gameOver = true;
-    }   
+    }  
+    checkCollision(mother, trash) {
+        if (mother.x < trash.x + trash.width && 
+            mother.x + mother.width > trash.x && 
+            mother.y < trash.y + trash.height &&
+            mother.height + mother.y > trash.y) {
+                return true;
+        } else {
+            return false;
+        }
+    } 
+    checkCollision(mother, bulb) {
+        if (mother.x < bulb.x + bulb.width && 
+            mother.x + mother.width > bulb.x && 
+            mother.y < bulb.y + bulb.height &&
+            mother.height + mother.y > bulb.y) {
+                return true;
+        } else {
+            return false;
+        }
+    } 
+    trashEat(){
+        this.sound.play('die');
+        this.bgm.stop();
+        this.gameOver = true;
+    } 
     checkCollision(mother, hook) {
         if (mother.x < hook.x + hook.width && 
             mother.x + mother.width > hook.x && 
@@ -214,7 +280,7 @@ class Play extends Phaser.Scene {
     }
     winterCheck() {
        
-        if(this.fishnum < 5){
+        if(this.fishnum < 3){
             this.bgm.stop();
             this.gameOver = true;
         }else{
