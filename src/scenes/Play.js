@@ -12,6 +12,8 @@ class Play extends Phaser.Scene {
         this.load.image('baby','./assets/baby.png');
         this.load.image('nest', './assets/nest.png');
         this.load.image('gameover', './assets/gameover.png');
+        this.load.spritesheet('bubble', './assets/bubbles_sheet.png', {frameWidth: 64,
+            frameHeight: 64, startFrame: 0, endFrame: 10});
     }
     create(){
         
@@ -51,6 +53,12 @@ class Play extends Phaser.Scene {
             loop: true 
         });
         this.bgm.play();
+
+        this.anims.create({
+            key: 'eatingfish', 
+            frames: this.anims.generateFrameNumbers('bubble',{start: 0, end: 10, 
+            first: 0}),
+            frameRate: 30});
 
         //baby eats fish timer
         this.babyEat = this.time.addEvent({ delay: 5000, callback: this.updateCounter, callbackScope: this, loop: true});
@@ -105,6 +113,11 @@ class Play extends Phaser.Scene {
     }
 
     eatFish(fish){
+        let boom = this.add.sprite(this.mother.x, this.mother.y, 'bubble').setOrigin(0,0);
+        boom.anims.play('eatingfish');
+        boom.on('animationcomplete', () => {
+            boom.destroy();
+        });
         fish.alpha = 0;
         this.sound.play('eat');
         fish.reset();
