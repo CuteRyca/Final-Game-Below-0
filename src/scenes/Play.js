@@ -46,6 +46,7 @@ class Play extends Phaser.Scene {
         this.keyPUT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         
         //add score
+        this.level = 3;
         this.numberOfFish = 0;
         this.score = 0;
         this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
@@ -71,8 +72,8 @@ class Play extends Phaser.Scene {
 
         //baby eats fish timer
         this.babyEat = this.time.addEvent({ delay: 5000, callback: this.updateCounter, callbackScope: this, loop: true});
-        this.winter = this.time.addEvent({ delay: 25000, callback: this.winterTimer, callbackScope: this, loop: true});
-        this.check = this.time.addEvent({ delay: 30000, callback: this.winterCheck, callbackScope: this, loop: true});
+        this.winter = this.time.addEvent({ delay: 20000, callback: this.winterTimer, callbackScope: this, loop: true});
+        this.check = this.time.addEvent({ delay: 25000, callback: this.winterCheck, callbackScope: this, loop: true});
     }
     update(){
         this.sea.tilePositionX +=0;
@@ -258,14 +259,19 @@ class Play extends Phaser.Scene {
     }
     winterTimer(){
         this.winter = this.add.sprite(game.config.width/2,game.config.height/2,'zero');
+        this.winter_text = this.add.text(350, 400, 'Need Fish: '+ this.level, style).setOrigin(0,0);
+        this.winter.visible = true;
+        
     }
     winterCheck() {
        
-        if(this.fishnum < 3){
+        if(this.fishnum < this.level){
             this.bgm.stop();
             this.gameOver = true;
         }else{
-            this.winter.alpha = 0;
+            this.level+=2;
+            this.winter.visible = false;
+            this.winter_text.destroy();
             this.scoreBoard.destroy();
             this.score = 0;
             this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
