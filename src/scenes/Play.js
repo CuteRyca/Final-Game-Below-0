@@ -56,7 +56,7 @@ class Play extends Phaser.Scene {
         //setting up bgm
         this.bgm = this.sound.add('music', { 
             mute: false,
-            volume: 0.25,
+            volume: 0.2,
             rate: 1,
             loop: true 
         });
@@ -138,7 +138,7 @@ class Play extends Phaser.Scene {
             boom.destroy();
         });
         fish1.alpha = 0;
-        this.sound.play('eat');
+        this.sound.play('eatgood');
         fish1.reset();
         fish1.alpha = 1;
         this.scoreBoard.destroy();
@@ -163,7 +163,7 @@ class Play extends Phaser.Scene {
             boom.destroy();
         });
         fish2.alpha = 0;
-        this.sound.play('eat');
+        this.sound.play('eatgood');
         fish2.reset();
         fish2.alpha = 1;
         this.scoreBoard.destroy();
@@ -188,7 +188,7 @@ class Play extends Phaser.Scene {
             boom.destroy();
         });
         fish3.alpha = 0;
-        this.sound.play('eat');
+        this.sound.play('eatgood');
         fish3.reset();
         fish3.alpha = 1;
         this.scoreBoard.destroy();
@@ -232,7 +232,7 @@ class Play extends Phaser.Scene {
         }
     } 
     trashEat(){
-        this.sound.play('die');
+        this.sound.play('eattrash');
         this.bgm.stop();
         this.gameOver = true;
     } 
@@ -248,6 +248,7 @@ class Play extends Phaser.Scene {
         }
     }
     arriveNest(){ 
+        this.sound.play('putfish');
         this.scoreBoard.destroy();
         this.score = 0;
         this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
