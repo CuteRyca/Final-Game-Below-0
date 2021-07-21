@@ -36,8 +36,6 @@ class Play extends Phaser.Scene {
         //game.physics.enable(this.fish, Phaser.Physics.ARCADE);
         this.shark = new Shark(this, 0, 50,'shark', 0, 30).setOrigin(0,0).setScale(0.8);
         //game.physics.enable(Shark, Phaser.Physics.ARCADE);
-        this.hook = new Hook(this,  game.config.width / 2, 0,'hook', 0, 30).setScale(1.5);
-    	//game.physics.enable(hook, Phaser.Physics.ARCADE);
         this.baby = new Baby(this, game.config.width / 2, game.config.height*0.95,'baby', 0, 30).setOrigin(0,0);
         this.nest = new Nest(this, game.config.width / 2, game.config.height*0.95,'nest', 0, 30).setOrigin(0,0).setScale(0.7);
         //define keys
@@ -85,7 +83,6 @@ class Play extends Phaser.Scene {
         this.fish2.update();
         this.fish3.update();
         this.shark.update();
-        this.hook.update();
         this.baby.update();
         this.nest.update();
         this.trash.update();
@@ -113,9 +110,6 @@ class Play extends Phaser.Scene {
         }
         if(this.checkCollision(this.mother, this.bulb)){
             this.trashEat();
-        }
-        if(this.checkCollision(this.mother, this.hook)){
-            this.touchHook(this.hook);
         }
         
         if(this.checkCollision(this.mother, this.nest)&&Phaser.Input.Keyboard.JustDown(this.keyPUT)){
@@ -242,21 +236,7 @@ class Play extends Phaser.Scene {
         this.bgm.stop();
         this.gameOver = true;
     } 
-    checkCollision(mother, hook) {
-        if (mother.x < hook.x + hook.width && 
-            mother.x + mother.width > hook.x && 
-            mother.y < hook.y + hook.height &&
-            mother.height + mother.y > hook.y) {
-                return true;
-        } else {
-            return false;
-        }
-    }
-    touchHook(hook){
-        hook.reset();
-        this.bgm.stop();
-        this.scene.start('skyScene');
-    }
+    
     checkCollision(mother, nest) {
         if (mother.x < nest.x + nest.width && 
             mother.x + mother.width > nest.x && 
