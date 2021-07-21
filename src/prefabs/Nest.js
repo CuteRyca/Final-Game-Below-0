@@ -4,7 +4,7 @@ class Nest extends Phaser.GameObjects.Sprite{
         scene.add.existing(this);
     }
     update(){
-        this.x = borderUISize;
-        this.y = game.config.height*0.8;
+        this.x = game.config.width-borderUISize*3;
+        this.y = game.config.height*0.9;
     }
 }

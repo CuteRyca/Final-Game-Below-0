@@ -4,7 +4,7 @@ class Play extends Phaser.Scene {
     }
     preload(){
         // load images/tile sprites
-        this.load.image('sea','./assets/background.png');
+        this.load.image('sea','./assets/new_bg.png');
         this.load.image('mother', './assets/mother.png');
         this.load.image('fish','./assets/fish1.png');
         this.load.image('shark','./assets/shark.png');
@@ -21,7 +21,7 @@ class Play extends Phaser.Scene {
     	//game.physics.enable(mother, Phaser.Physics.ARCADE);
         this.fish = new Fish(this, game.config.width + 60, 50,'fish', 0, 30).setOrigin(0,0);
         //game.physics.enable(this.fish, Phaser.Physics.ARCADE);
-        this.shark = new Shark(this, 0, 50,'shark', 0, 30).setOrigin(0,0);
+        this.shark = new Shark(this, 0, 50,'shark', 0, 30).setOrigin(0,0).setScale(0.8);
         //game.physics.enable(Shark, Phaser.Physics.ARCADE);
         this.hook = new Hook(this,  game.config.width / 2, 0,'hook', 0, 30).setScale(1.5);
     	//game.physics.enable(hook, Phaser.Physics.ARCADE);
@@ -51,7 +51,7 @@ class Play extends Phaser.Scene {
         this.bgm.play();
     }
     update(){
-        this.sea.tilePositionX +=2;
+        this.sea.tilePositionX +=0;
 
         if(!this.gameOver){
         this.mother.update();
