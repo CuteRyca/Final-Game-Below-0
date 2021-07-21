@@ -14,6 +14,7 @@ class Play extends Phaser.Scene {
         this.load.image('gameover', './assets/gameover.png');
     }
     create(){
+        
         this.gameOver = false;
         //add background,mother,fish
         this.sea = this.add.tileSprite(0, 0, 840, 640, 'sea').setOrigin(0, 0);
@@ -28,10 +29,11 @@ class Play extends Phaser.Scene {
         this.baby = new Baby(this, game.config.width / 2, game.config.height*0.95,'baby', 0, 30).setOrigin(0,0);
         this.nest = new Nest(this, game.config.width / 2, game.config.height*0.95,'nest', 0, 30).setOrigin(0,0).setScale(0.7);
         //define keys
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keyPUT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         
         //add score
         this.numberOfFish = 0;
@@ -49,22 +51,9 @@ class Play extends Phaser.Scene {
             loop: true 
         });
         this.bgm.play();
-        var timer = this.time.addEvent({
-            delay: 500,                // ms
-            // timer length
-            callback: this.updateCounter,
-            //args: [],
-            callbackScope: Play,
-            loop: true
-        });
-        var winter = this.time.addEvent({
-            delay: 30000,                // ms
-            // timer length
-            callback: this.winterCheck,
-            //args: [],
-            callbackScope: Play,
-            loop: true
-        });
+
+        //baby eats fish timer
+        this.babyEat = this.time.addEvent({ delay: 5000, callback: this.updateCounter, callbackScope: this, loop: true});
     }
     update(){
         this.sea.tilePositionX +=0;
@@ -76,6 +65,7 @@ class Play extends Phaser.Scene {
         this.hook.update();
         this.baby.update();
         this.nest.update();
+        
         }
 
         if(this.gameOver){
@@ -94,7 +84,7 @@ class Play extends Phaser.Scene {
             this.touchHook(this.hook);
         }
         
-        if(this.checkCollision(this.mother, this.nest)){
+        if(this.checkCollision(this.mother, this.nest)&&Phaser.Input.Keyboard.JustDown(this.keyPUT)){
             this.arriveNest();
         }
         //game.config.height*0.7 is the height of cave
@@ -169,7 +159,7 @@ class Play extends Phaser.Scene {
         this.score = 0;
         this.scoreBoard = this.add.text(16, 16, 'Catch Fish:  ' + this.score, style);
         this.fishBoard.destroy();
-        this.fishnum = this.numberOfFish;
+        this.fishnum += this.numberOfFish;
         this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
     }
 
@@ -178,17 +168,17 @@ class Play extends Phaser.Scene {
     }
 
     updateCounter() {
-        if (Phaser.Math.RND.between(0, 10) < 1) {
+        if (Phaser.Math.RND.between(0, 10) < 5) {
             // fish eat chance
-            this.eatFood;
-            console.log('x');
+            this.fishBoard.destroy();
+            this.fishnum-=1;
+            this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
+            
         }
+        console.log('x');
+        
     }
     
-    eatFood(){
-        this.fishBoard.destroy();
-        this.fishnum-=1;
-        this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
-    }
+    
     
 }
