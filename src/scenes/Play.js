@@ -12,11 +12,12 @@ class Play extends Phaser.Scene {
         this.load.image('trash','./assets/trash_can.png');
         this.load.image('bulb','./assets/light_bulb.png');
         this.load.image('shark','./assets/shark.png');
-        this.load.image('hook','./assets/hook1.png');
         this.load.image('baby','./assets/baby.png');
         this.load.image('nest', './assets/nest.png');
         this.load.image('zero','./assets/zero.png');
-        this.load.image('gameover', './assets/gameover.png');
+        this.load.image('eatendead', './assets/eaten_dead.png');
+        this.load.image('posiondead', './assets/poison_dead.png');
+        this.load.image('frozendead', './assets/frozen_dead.png');
         this.load.spritesheet('bubble', './assets/bubbles_sheet.png', {frameWidth: 64,
             frameHeight: 64, startFrame: 0, endFrame: 10});
     }
@@ -78,7 +79,7 @@ class Play extends Phaser.Scene {
     update(){
         this.sea.tilePositionX +=0;
 
-        if(!this.gameOver){
+        
         this.mother.update();
         this.fish1.update();
         this.fish2.update();
@@ -88,11 +89,9 @@ class Play extends Phaser.Scene {
         this.nest.update();
         this.trash.update();
         this.bulb.update();
-        }
+        
 
-        if(this.gameOver){
-            this.scene.start("gameOverScene");
-        }
+        
 
         if(this.checkCollision(this.mother, this.fish1)){
             this.eatFish1(this.fish1);
@@ -210,7 +209,7 @@ class Play extends Phaser.Scene {
     sharkEat(){
         this.sound.play('die');
         this.bgm.stop();
-        this.gameOver = true;
+        this.scene.start('eatenScene');
     }  
     checkCollision(mother, trash) {
         if (mother.x < trash.x + trash.width && 
@@ -235,7 +234,7 @@ class Play extends Phaser.Scene {
     trashEat(){
         this.sound.play('eattrash');
         this.bgm.stop();
-        this.gameOver = true;
+        this.scene.start('posionScene');
     } 
     
     checkCollision(mother, nest) {
@@ -267,7 +266,7 @@ class Play extends Phaser.Scene {
        
         if(this.fishnum < this.level){
             this.bgm.stop();
-            this.gameOver = true;
+            this.scene.start('frozenScene');
         }else{
             this.level+=2;
             this.winter.visible = false;
@@ -288,7 +287,7 @@ class Play extends Phaser.Scene {
             this.fishBoard.destroy();
             this.fishnum-=1;
             this.fishBoard = this.add.text(630, 600, 'Own Fish:  ' + this.fishnum, style);
-            
+            //baby move to nest and return to oringinal destination
         }
         console.log('x');
         

@@ -5,7 +5,7 @@ let config = {
   physics: {
     default: "arcade"
 },
-  scene: [Menu, Play,GameOver]
+  scene: [Menu, Play,Posion,Eaten,Frozen]
 }
   
 let game = new Phaser.Game(config);
